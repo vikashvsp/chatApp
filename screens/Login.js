@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, TextInput, Image, SafeAreaView, Touchab
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../config/firebase";
 
-const backImage = require("../assets/backimg.png")
+const backImage = require("../assets/backimg.jpg")
 
 export default function Login({ navigation }) {
      const [email, setEmail] = useState("");
@@ -12,7 +12,7 @@ export default function Login({ navigation }) {
      const onHandleLogin = () => {
           if (email !== "" && password !== "") {
                signInWithEmailAndPassword(auth, email, password)
-                    .then(() => console.log("LoginSucces"))
+                    .then(() => console.log("Login Succes"))
                     .catch((err) => Alert.alert("Login Error", err.message));
           }
      };
@@ -20,7 +20,39 @@ export default function Login({ navigation }) {
      return (
           <View style={styles.container}>
                <Image source={backImage} style={styles.backImage} />
-               <View style={styles.whiteSheet}/>
+               <View style={styles.whiteSheet} />
+               <SafeAreaView style={styles.form}>
+                    <Text style={styles.title}>Login</Text>
+                    <TextInput
+                         style={styles.input}
+                         placeholder="Enter Email"
+                         autoCapitalize="none"
+                         keyboardType="email-address"
+                         textContentType="emailAddress"
+                         autoFocus={true}
+                         value={email}
+                         onChangeText={(text) => setEmail(text)}
+                    />
+                    <TextInput
+                         style={styles.input}
+                         placeholder="Enter Password"
+                         autoCapitalize="none"
+                         autoCorrect={false}
+                         secureTextEntry={true}
+                         textContentType="password"
+                         value={password}
+                         onChangeText={(text) => setPassword(text)}
+                    />
+                    <TouchableOpacity style={styles.button} onPress={onHandleLogin}>
+                         <Text style={{fontWeight:'bold',color:'#fff',fontSize:18}}>Log in</Text>
+                    </TouchableOpacity>
+                    <View style={{marginTop:20,flexDirection:'row',alignItems:'center',alignSelf:'center'}}>
+                         <Text style={{color:'gray',fontWeight:'600',fontSize:14}}> Don't have an account? </Text>
+                         <TouchableOpacity onPress={()=>navigation.navigate("Signup")}>
+                              <Text style={{color:'#f57c00',fontWeight:'600',fontSize:14}}> Sign Up </Text>
+                         </TouchableOpacity>
+                    </View>
+               </SafeAreaView>
           </View>
      )
 
